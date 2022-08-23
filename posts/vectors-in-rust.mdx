@@ -1,0 +1,186 @@
+---
+heading: 'Common vector methods in Rust'
+subheading: 'A short overview of the most commonly-used vector methods in Rust'
+date: 08.23.2022
+tags: ['rust']
+---
+
+Vectors (`Vec`) are **variable-length arrays**. They are the most common type of **collection** you will use day-to-day.
+
+A vector consists of a **length**, a **capacity**, and a **pointer**. A vector's pointer points to heap-allocated memory _only if_ both its capacity is nonzero and the element size is nonzero. Elements of a vector are always allocated to the heap.
+
+As a vector grows beyond its capacity it will need to reallocate to a larger heap allocation. Rust automatically frees the previously-used heap allocation of the vector.
+
+### Creating vectors
+
+You can create a vector a number of ways. The most common way is using the `vec!` macro:
+
+<Code language="rust">let cars = vec!["BMW", "Mercedes", "Fiat"];</Code>
+You can use the `Vec::new` or `Vec::default` methods to create a vector with a length
+and capacity of zero, or the `Vec::with_capacity` method to create an empty vector
+with _at least_ the specified capacity.
+
+<Code language="rust">
+
+let empty_vector = Vec::new(); // an empty vector
+let min_cap_vector = Vec::with_capacity(10); // with a minumum capacity of 10
+
+</Code>
+
+### Querying vectors
+
+Check the length of a vector with `len`:
+
+<Code language="rust">
+
+let friends = vec!["Jessi", "Andrew", "Nick"];
+assert_eq!(friends.len(), 3);
+
+</Code>
+
+Check the if a vector is empty with `is_empty`:
+
+<Code language="rust">
+```
+let no_friends: Vec<&str> = Vec::new();
+assert!(no_friends.is_empty());
+```
+</Code>
+
+Get the first element of a vector with `first`:
+
+<Code language="rust">
+
+let friends = vec!["Jessi", "Andrew", "Nick"];
+let jessi = friends.first();
+assert_eq!(jessi, Some(&"Jessi"));
+
+</Code>
+
+<Callout emoji="👉">If the vector is empty, this will return `None`</Callout>
+
+### Modifying vectors
+
+You can **add** and **remove** elements to the end a vector using the `push` and `pop` methods, respectively:
+
+<Code language="rust">
+
+let mut friends = Vec::new();
+assert!(friends.is_empty());
+friends.push("Jessi");
+friends.push("Andrew");
+assert_eq!(friends, ["Jessi", "Andrew"]);
+friends.pop();
+assert_eq!(friends, ["Jessi"]);
+
+</Code>
+
+You can also **insert** an element at an arbitrary position in a vector using `insert`:
+
+<Code language="rust">
+
+let mut friends = vec!["Jessi", "Devin", "Missy"];
+friends.insert(1, "Lola");
+assert_eq!(friends, ["Jessi", "Lola", "Devin", "Missy"]);
+
+</Code>
+
+You can **move** elements from one vector to another using the `append` method, effectively attaching the start of one vector to the end of another. Note: this leaves the other vector empty:
+
+<Code language="rust">
+
+let mut friends = vec!["Jessi", "Lola", "Missy"];
+let mut more_friends = vec!["Nick", "Andrew"];
+friends.append(&mut more_friends);
+assert_eq!(friends, ["Jessi", "Lola", "Missy", "Nick", "Andrew"]);
+assert!(more_friends.is_empty()); // other vector is now empty
+
+</Code>
+
+Remove _consecutive_ duplicates from a vector using `dedup`:
+
+<Code language="rust">
+
+let mut friends = vec!["Jessi", "Andrew", "Andrew", "Nick"];
+friends.dedup();
+assert_eq!(friends, ["Jessi", "Andrew", "Nick"]);
+
+</Code>
+
+<Callout emoji="👉">
+  Note that this only removes _consecutive_ duplicates. Consider using the
+  `sort` method before `dedup` if your vector is not sorted.
+</Callout>
+
+You can shorten a vector using the `truncate` method, which keeps all elements up to (but not including) the supplied index:
+
+<Code language="rust">
+
+let friends = vec!["Jessi", "Andrew", "Nick"];
+friends.truncate(2);
+assert_eq!(friends, ["Jessi", "Andrew"];
+
+</Code>
+
+Use `drain` to remove a specified range from a vector and return it as an iterator. If the iterator is dropped before being consumed the dropped newly-created iterator is dropped.
+
+<Code language="rust">
+```
+let friends = vec!["Jessi", "Andrew", "Nick"];
+let boys: Vec<\_> = friends.drain(1..).collect();
+assert_eq!(boys, ["Andrew", "Nick"]);
+assert_eq!(friends, ["Jessi"]);
+```
+</Code>
+
+If you initially create a vector with a larger capacity than necessary, you can shrink the vector with a lower bound using `shink_to_fit`:
+
+<Code language="rust">
+
+let friends = Vec::with_capacity(10); // an empty vector with a minumum capacity of 10
+friends.extend(["Jessi", "Andrew", "Nick"]);
+assert_eq!(friends.capacity(), 10); friends.shink_to_fit(); // shink vector capacity to fit vector length
+assert_eq!(friends.capacity(), >= 3);
+
+</Code>
+
+### Removing vector elements
+
+The simplest way to remove all elements from a vector is using `clear` method:
+
+<Code language="rust">
+
+let friends = vec!["Jessi", "Andrew", "Nick"];
+assert_eq!(friends.len(), 3);
+friends.clear();
+assert!(friends.is_empty());
+
+</Code>
+
+This is the same as calling `truncate` with a length of `0`:
+
+<Code language="rust">
+
+friends.truncate(0);
+assert!(friends.is_empty());
+
+</Code>
+
+Or `drain` with an full range:
+
+<Code language="rust">
+
+friends.drain(..);
+assert!(friends.is_empty());
+
+</Code>
+
+You can use `remove` to remove and return a single element of an array, preserving the order of the array:
+
+<Code language="rust">
+
+let mut friends = vec!["Jessi", "Andrew", "Nick"];
+let andrew = friends.remove(1);
+assert_eq!(andrew, "Andrew");
+
+</Code>

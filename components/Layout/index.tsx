@@ -9,8 +9,8 @@ interface ILayout {
 
 function Layout({ children }: ILayout) {
   return (
-    <Flex w="100%" flexDir="column" minH="100vh">
-      <Flex w="95%" mx="auto" maxW="1200px" flexDir="column" minH="100vh">
+    <Flex w="100%" flexDir="column" minH="100vh" bgColor="gray.50">
+      <Flex w="95%" mx="auto" maxW="900px" flexDir="column" minH="100vh">
         <Flex w="100%" flexDir="column" flexGrow={1}>
           <Header />
           {children}

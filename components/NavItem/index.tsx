@@ -18,6 +18,11 @@ function NavItem({ children, href, icon }: INavItem) {
         fontSize="md"
         fontWeight="semibold"
         color={isActive ? 'gray.900' : 'gray.500'}
+        transition="color .1s ease-in"
+        _hover={{
+          textDecoration: 'none',
+          color: 'red.500',
+        }}
       >
         {children}
       </ChakraLink>
