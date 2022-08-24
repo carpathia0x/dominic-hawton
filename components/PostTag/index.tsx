@@ -1,15 +1,15 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-function PostTag({ children, color }) {
+function PostTag({ children }) {
   return (
     <Flex
-      px={2}
+      px={2.5}
       fontSize="sm"
       fontWeight="semibold"
       py={0.25}
-      color={`${color}.500`}
-      bgColor={`${color}.50`}
+      color="gray.900"
+      bgColor="gray.100"
       borderRadius="sm"
     >
       {children}

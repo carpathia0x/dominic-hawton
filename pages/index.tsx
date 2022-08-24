@@ -11,6 +11,16 @@ import fs from 'fs';
 import { postFilePaths, POSTS_PATH } from '../utils/mds-utils';
 import PostPreview from '../components/PostPreview';
 
+interface IPost {
+  data: {
+    heading: string;
+    subheading: string;
+    tags: string[];
+    date: string;
+  };
+  slug: string;
+}
+
 function Writing({ posts }) {
   useEffect(() => {
     Prism.highlightAll();
@@ -32,14 +42,16 @@ function Writing({ posts }) {
           flexDir="column"
           justify="start"
           align="start"
+          gap={4}
         >
-          {posts?.map(({ data }) => (
+          {posts?.map(({ data, slug }: IPost) => (
             <PostPreview
               key={data.heading}
               heading={data.heading}
               subheading={data.subheading}
               date={data.date}
               tags={data?.tags}
+              slug={`writing/${slug}`}
             />
           ))}
         </Flex>
@@ -55,10 +67,13 @@ export async function getStaticProps({ params }) {
     const source = fs.readFileSync(path.join(POSTS_PATH, filePath));
     const { content, data } = matter(source);
 
+    const slug = filePath.split('.')[0];
+
     return {
       content,
       data,
       filePath,
+      slug,
     };
   });
 

@@ -33,7 +33,7 @@ function PostLayout({ meta, children }: IPostLayout) {
           ))}
       </Flex>
       <Divider />
-      <Flex flexDir="column" gap={3} mt={4}>
+      <Flex flexDir="column" gap={4} mt={4}>
         {children}
       </Flex>
     </Flex>

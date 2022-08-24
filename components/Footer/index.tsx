@@ -4,7 +4,7 @@ import { FaGithub, FaTwitter } from 'react-icons/fa';
 
 function Footer() {
   return (
-    <Flex py={4} align="center" justify="center" gap={4}>
+    <Flex py={16} align="center" justify="center" gap={4}>
       <FaGithub />
       <FaTwitter />
     </Flex>

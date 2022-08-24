@@ -20,29 +20,25 @@ function About() {
       </Flex>
       <Flex flexDir="column" gap={6}>
         <Heading size="lg">What I'm doing now</Heading>
-        <UnorderedList>
-          <ListItem>
-            CTO at{' '}
-            <Link href="https://hone.fi/" target="_blank" fontWeight="semibold">
-              hone.fi
-            </Link>
-          </ListItem>
-          <ListItem>
-            Building{' '}
-            <Link
-              href="https://allegra.studio/"
-              target="_blank"
-              fontWeight="semibold"
-            >
-              Allegra
-            </Link>
-          </ListItem>
-          <ListItem>
-            Writing about software development, finance, economics, and DeFi
-          </ListItem>
-        </UnorderedList>
+        <Flex flexDir="column" gap={6}>
+          <Stack spacing={0.5}>
+            <Text>
+              CTO at{' '}
+              <Link
+                href="https://hone.fi/"
+                target="_blank"
+                fontWeight="semibold"
+              >
+                Hone
+              </Link>
+            </Text>
+            <Text fontWeight="semibold" fontSize="sm" color="gray.500">
+              2021 - Present
+            </Text>
+          </Stack>
+        </Flex>
       </Flex>
-      <Flex flexDir="column" gap={6} mt={16}>
+      <Flex flexDir="column" gap={6} mt={12}>
         <Heading size="lg">Previously</Heading>
         <Flex flexDir="column" gap={6}>
           <Stack spacing={0.5}>

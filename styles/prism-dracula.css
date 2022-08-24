@@ -5,7 +5,7 @@
  * Ported for PrismJS by Albert Vallverdu [@byverdu]
  */
 
-code {
+:not(pre) > code {
   background-color: #fbe4e4;
   padding: 0.05rem 0.3rem 0.05rem 0.3rem;
   border-radius: 0.2rem;

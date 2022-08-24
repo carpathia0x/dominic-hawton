@@ -21,7 +21,7 @@ function NavItem({ children, href, icon }: INavItem) {
         transition="color .1s ease-in"
         _hover={{
           textDecoration: 'none',
-          color: 'red.500',
+          color: 'blue.500',
         }}
       >
         {children}

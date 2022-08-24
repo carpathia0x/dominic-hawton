@@ -1,0 +1,167 @@
+---
+heading: 'Deref vector methods in Rust'
+subheading: 'Immutable dereferencing operations on vector elements'
+date: 08.24.2022
+tags: ['rust', 'vectors', 'collections', 'traits']
+---
+
+Vectors are smart pointers and implement the `Deref` trait, which provides immutable dereferencing operations like `*v`. This makes accessing the data behind vector elements much more convenient.
+
+## Creating vector elements
+
+We covered the most common ways of creating vectors in the previous post, [Common vector methods in Rust](), but the `Deref` trait provides us with a another useful option: `repeat`
+
+`repeat` creates a vector by repeating a slice `n` times:
+
+<Code language="rust">
+
+let bumblebee = vec!["black", "yellow"].repeat(3);
+assert_eq!(bumblebee, ["black", "yellow", "black", "yellow", "black", "yellow",]);
+
+</Code>
+
+## Rearranging vector elements
+
+We can sort a vector slice using the `sort` method:
+
+<Code language="rust">
+
+let mut alphabet = vec!['d', 'a', 'b', 'f', 'e', 'c'];
+alphabet.sort();
+assert_eq!(alphabet, ['a', 'b', 'c', 'd', 'e', 'f']);
+
+</Code>
+
+<Callout emoji="💡">
+  The default `sort` algorithm is insipired by
+  [**timsort**](https://en.wikipedia.org/wiki/Timsort), which is derived from
+  merge sort and insertion sort.
+</Callout>
+
+`sort` is stable (it doesn't reorder equal elements) and is at worst O(n \* log(n)). The Rust docs suggest you use `sort_unstable` when keeping the order of equal elements isn't important as it is faster and doesn't allocate auxillary memory.
+
+<Code language="rust">
+
+let mut alphabet = vec!['d', 'a', 'b', 'f', 'e', 'c'];
+alphabet.sort_unstable();
+assert_eq!(alphabet, ['a', 'b', 'c', 'd', 'e', 'f']);
+
+</Code>
+
+We can reverse the order of a the elements (in place) using `reverse`:
+
+<Code language="rust">
+
+let mut alphabet = vec!['a', 'b', 'c', 'd', 'e', 'f'];
+alphabet.reverse();
+assert_eq!(alphabet, ['f', 'e', 'd', 'c', 'b', 'a']);
+
+</Code>
+
+We can swap the order of two elements using `swap`:
+
+<Code language="rust">
+
+let mut colors = vec!["blue", "green", "pink", "purple"];
+colors.swap(0, 2); // swap "blue" and "pink"
+assert_eq!(colors, ["pink", "green", "blue", "purple"]);
+
+</Code>
+
+<Callout emoji="👉">
+  If you call `swap` with an out-of-bounds index Rust will panic.
+</Callout>
+
+We can also rotate the elements of a vector using the `rotate_left` and `rotate_right` methods to rotate through elements of a vector:
+
+<Code language="rust">
+
+let mut playlist = vec!["Good Morning", "Heartless", "Flashing Lights", "Monster"];
+playlist.rotate_left(2); // move first two songs to the back of the queue
+assert_eq!(playlist, ["Flashing Lights", "Monster", "Good Morning", "Heartless"]);
+playlist.rotate_right(1); // actually I want to listen to "Heartless"
+assert_eq!(playlist, ["Heartless", "Flashing Lights", "Monster", "Good Morning"]);
+
+</Code>
+
+## Querying vector elements
+
+We can get vector elements via their index (or a range of indexes):
+
+<Code language="rust">
+
+let alphabet = vec!['a', 'b', 'c', 'd', 'e', 'f'];
+assert_eq!(alphabet[0], 'a');
+
+</Code>
+
+The above, however, will panic if the index is out of range. Alternatively, Rust provides the `get` method, which returns an `Option` and is therefore a safer choice if the index might be out-of-bounds:
+
+<Code language="rust">
+
+let alphabet = vec!['a', 'b', 'c', 'd', 'e', 'f'];
+assert_eq!(alphabet.get(0), Some(&'a'));
+
+</Code>
+
+We can check if a vector is empty (or is _not_ empty, as is the case below) using `is_empty`:
+
+<Code language="rust">
+
+let alphabet = vec!['a', 'b', 'c', 'd', 'e', 'f'];
+assert!(!alphabet.is_empty());
+
+</Code>
+
+We can use `starts_with` and `ends_with` to check if an vector start with or ends with a specific value:
+
+<Code language="rust">
+
+let alphabet = vec!['a', 'b', 'c', 'd', 'e', 'f'];
+assert!(alphabet.starts_with(&['a']));
+assert!(alphabet.ends_with(&['f']));
+
+</Code>
+
+Similarly, we can retrieve the first and last element of a vector with `first` and `last`, respectively:
+
+<Code language="rust">
+
+let alphabet = vec!['a', 'b', 'c', 'd', 'e', 'f'];
+assert_eq!(alphabet.first(), Some(&'a'));
+assert_eq!(alphabet.last(), Some(&'f'));
+
+</Code>
+
+## Modifying vector elements
+
+We can fill all elements of a vector with a single value using `fill`:
+
+<Code language="rust">
+
+let mut grades = vec!['c', 'a', 'b', 'b', 'c'];
+grades.fill('f');
+assert_eq!(grades, ['f', 'f', 'f', 'f', 'f']);
+
+</Code>
+
+If you're looking to merge two different vectors then look no further than `concat` or `join`.
+
+<Code language="rust">
+
+let bingo_numbers = vec![23, 54, 62, 11];
+let extra_numbers = vec![1, 12, 49];
+let all_numbers = [bingo_numbers, extra_numbers].concat();
+assert_eq!(all_numbers, [23, 54, 62, 11, 1, 12, 49]);
+
+</Code>
+
+The key difference between these two is that `join` allows you to insert a separator between the two vectors:
+
+<Code language="rust">
+
+let car_characteristics = ["Red", "Tesla"];
+let car_description = car_characteristics.join(" ");
+assert_eq!(car_description, "Red Tesla");
+
+</Code>

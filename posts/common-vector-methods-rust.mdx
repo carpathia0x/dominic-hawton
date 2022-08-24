@@ -2,7 +2,7 @@
 heading: 'Common vector methods in Rust'
 subheading: 'A short overview of the most commonly-used vector methods in Rust'
 date: 08.23.2022
-tags: ['rust']
+tags: ['rust', 'vectors', 'collections']
 ---
 
 Vectors (`Vec`) are **variable-length arrays**. They are the most common type of **collection** you will use day-to-day.
@@ -11,11 +11,12 @@ A vector consists of a **length**, a **capacity**, and a **pointer**. A vector's
 
 As a vector grows beyond its capacity it will need to reallocate to a larger heap allocation. Rust automatically frees the previously-used heap allocation of the vector.
 
-### Creating vectors
+## Creating vectors
 
 You can create a vector a number of ways. The most common way is using the `vec!` macro:
 
 <Code language="rust">let cars = vec!["BMW", "Mercedes", "Fiat"];</Code>
+
 You can use the `Vec::new` or `Vec::default` methods to create a vector with a length
 and capacity of zero, or the `Vec::with_capacity` method to create an empty vector
 with _at least_ the specified capacity.
@@ -27,7 +28,7 @@ let min_cap_vector = Vec::with_capacity(10); // with a minumum capacity of 10
 
 </Code>
 
-### Querying vectors
+## Querying vectors
 
 Check the length of a vector with `len`:
 
@@ -59,7 +60,7 @@ assert_eq!(jessi, Some(&"Jessi"));
 
 <Callout emoji="👉">If the vector is empty, this will return `None`</Callout>
 
-### Modifying vectors
+## Modifying vectors
 
 You can **add** and **remove** elements to the end a vector using the `push` and `pop` methods, respectively:
 
@@ -144,13 +145,30 @@ assert_eq!(friends.capacity(), >= 3);
 
 </Code>
 
-### Removing vector elements
+You can remove and replace a range of values in a vector using `splice`. `splice` returns an iterator of the removed range.
+
+<Code language="rust">
+```
+  let mut friends = vec!["Jessi", "Andrew", "Nick", "Lola"];
+  let more_friends = vec!["Missy", "Devin"];
+  let boys_only: Vec<_> = friends.splice(1..3, more_friends).collect();
+  assert_eq!(boys_only, ["Andrew", "Nick"]);
+  assert_eq!(friends, ["Jessi", "Missy", "Devin", "Lola"]);
+```
+</Code>
+
+<Callout emoji="💡">
+  The `replace_with` collection does not need to be the same length as the
+  specified `range`.
+</Callout>
+
+## Removing vector elements
 
 The simplest way to remove all elements from a vector is using `clear` method:
 
 <Code language="rust">
 
-let friends = vec!["Jessi", "Andrew", "Nick"];
+let mut friends = vec!["Jessi", "Andrew", "Nick"];
 assert_eq!(friends.len(), 3);
 friends.clear();
 assert!(friends.is_empty());
@@ -184,3 +202,5 @@ let andrew = friends.remove(1);
 assert_eq!(andrew, "Andrew");
 
 </Code>
+
+This is hardly an exhaustive list of vector methods but these are the ones I find myself reaching for most frequently. Next up, common vector methods inherited from the `Vec`'s `Deref` trait!
