@@ -15,7 +15,7 @@ function NavItem({ children, href, icon }: INavItem) {
   return (
     <Link href={`/${href}`}>
       <ChakraLink
-        fontSize="md"
+        fontSize="sm"
         fontWeight="semibold"
         color={isActive ? 'gray.900' : 'gray.500'}
         transition="color .1s ease-in"

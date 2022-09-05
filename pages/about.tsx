@@ -15,7 +15,7 @@ function About() {
       <Flex flexDir="column" gap={6} my={32}>
         <Heading size="xl">Hey, I'm Dom</Heading>
         <Text fontSize="lg" color="gray.700">
-          I'm a software developer, writer, and cat dad.
+          I'm a software developer, designer, and writer.
         </Text>
       </Flex>
       <Flex flexDir="column" gap={6}>
@@ -63,7 +63,7 @@ function About() {
           </Stack>
           <Stack spacing={0.5}>
             <Text>
-              Senior Immersive Technology Developer at{' '}
+              Senior Unreal Engine Developer at{' '}
               <Link
                 href="https://bvn.com.au/"
                 target="_blank"

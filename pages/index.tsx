@@ -30,7 +30,7 @@ function Writing({ posts }) {
       <Flex flexDir="column" gap={6} my={32}>
         <Heading size="xl">Writing</Heading>
         <Text fontSize="lg" color="gray.700">
-          On software development, decentralised finance, and economics.
+          On software development, design, finance, and economics.
         </Text>
       </Flex>
       <Flex flexDir="column" gap={6} mt={4} flexGrow={1}>
