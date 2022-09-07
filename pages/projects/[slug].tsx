@@ -1,3 +1,8 @@
+import BackButton from '@/components/BackButton';
+import Callout from '@/components/Callout';
+import Code from '@/components/Code';
+import ProjectLayout, { IProjectMeta } from '@/components/ProjectLayout';
+import { projectsFilePath, PROJECTS_PATH } from '@/utils/mds-utils';
 import fs from 'fs';
 import matter from 'gray-matter';
 import { GetStaticProps } from 'next';
@@ -5,12 +10,8 @@ import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import Head from 'next/head';
 import path from 'path';
-import Callout from '../../components/Callout';
-import Code from '../../components/Code';
-import PostLayout from '../../components/PostLayout';
-import { postFilePaths, POSTS_PATH } from '../../utils/mds-utils';
 
-interface IPostPage {
+interface IProjectPage {
   source: MDXRemoteSerializeResult<
     Record<string, unknown>,
     Record<string, string>
@@ -18,24 +19,24 @@ interface IPostPage {
   frontMatter: Record<string, unknown>;
 }
 
-function PostPage({ source, frontMatter }: IPostPage) {
+function ProjectPage({ source, frontMatter }: IProjectPage) {
   return (
     <>
       <Head>
-        <title>{`${frontMatter.heading} | DH`}</title>
+        <title>{`${frontMatter.name} | DH`}</title>
       </Head>
-      <PostLayout meta={frontMatter as any}>
-        <MDXRemote {...source} components={{ Code, Callout }} />
-      </PostLayout>
+      <ProjectLayout meta={frontMatter as IProjectMeta}>
+        <MDXRemote {...source} components={{ Code, Callout, BackButton }} />
+      </ProjectLayout>
     </>
   );
 }
 
-export default PostPage;
+export default ProjectPage;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const postFilePath = path.join(POSTS_PATH, `${params!.slug}.mdx`);
-  const source = fs.readFileSync(postFilePath);
+  const projectsFilePath = path.join(PROJECTS_PATH, `${params!.slug}.mdx`);
+  const source = fs.readFileSync(projectsFilePath);
 
   const { content, data } = matter(source);
 
@@ -56,7 +57,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  const paths = postFilePaths
+  const paths = projectsFilePath
     .map((path) => path.replace(/\.mdx?$/, ''))
     .map((slug) => ({ params: { slug } }));
 

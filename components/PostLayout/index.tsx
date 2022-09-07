@@ -2,13 +2,15 @@ import { Text, Divider, Flex, Heading, Tag, Box } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import React from 'react';
 
+export interface IMeta extends Record<string, unknown> {
+  heading: string;
+  subheading: string;
+  date: Date;
+  tags: string[];
+}
+
 interface IPostLayout {
-  meta: {
-    heading: string;
-    subheading: string;
-    date: Date;
-    tags: string[];
-  };
+  meta: IMeta;
   children: React.ReactNode;
 }
 
